@@ -1,6 +1,6 @@
 import './App.css';
 import "bootstrap/dist/css/bootstrap.min.css";
-
+import 'fontsource-roboto';
 
 import AuthProvider from './auth/AuthProvider';
 import AppRouter from "./routers/AppRouter";

@@ -4,10 +4,11 @@ import { LinkContainer } from "react-router-bootstrap";
 import { useEffect, useState } from "react";
 import * as api from "../../services/api.service";
 import ApartamentoList from "./ApartamentoList";
+import ApartamentoForm from "./ApartamentoForm";
 
 const ApartamentoPage = (props) => {
     const [apartamentos, setApartamentos] = useState([]);
-    const { url } = useRouteMatch();
+    const { path, url } = useRouteMatch();
 
     useEffect(() => {
         api.getApartamentos().then((res) => {
@@ -23,7 +24,7 @@ const ApartamentoPage = (props) => {
             <Row>
                 <Nav>
                     <Nav.Item>
-                        <LinkContainer to="/apartamentos">
+                        <LinkContainer to={`${url}/`}>  {/* apartamentos*/}
                             <Nav.Link>Lista</Nav.Link>
                         </LinkContainer>
                     </Nav.Item>
@@ -36,11 +37,11 @@ const ApartamentoPage = (props) => {
             </Row>
 
             <Switch>
-                <Route exact path="/apartamentos">
+                <Route exact path={`${url}`}>
                     <ApartamentoList apartamentos={apartamentos} />
                 </Route>
-                <Route path="/apartamentos/new"></Route>
-                <Route path="/apartamentos/detalle"></Route>
+                <Route path={`${url}/nuevo`}><ApartamentoForm /> </Route>
+                <Route path={`${url}/detalle`}></Route>
             </Switch>
         </Container>
     );

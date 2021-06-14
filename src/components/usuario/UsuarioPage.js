@@ -4,6 +4,8 @@ import { Container, Row, Nav } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { useEffect, useState } from "react";
 import * as api from "../../services/api.service";
+import UsuarioForm from "./UsuarioForm";
+import UsuarioDetalle from "./UsuarioDetalle";
 
 const UsuarioPage = (props) => {
     const [usuarios, setUsuarios] = useState([]);
@@ -11,21 +13,19 @@ const UsuarioPage = (props) => {
 
     useEffect(() => {
         api.getUsers().then((res) => {
-
             setUsuarios(res.data);
-            console.log(usuarios);
         });
     }, []);
 
     return (
-        <Container>
+        <>
             <Row>
                 <h1>Usuarios</h1>
             </Row>
             <Row>
                 <Nav>
                     <Nav.Item>
-                        <LinkContainer to="/usuarios">
+                        <LinkContainer exact to='/usuarios'>
                             <Nav.Link>Lista</Nav.Link>
                         </LinkContainer>
                     </Nav.Item>
@@ -38,15 +38,17 @@ const UsuarioPage = (props) => {
             </Row>
 
             <Switch>
-                <Route exact path="/usuarios">
+                <Route exact path="/usuarios" >
                     <UsuarioList usuarios={usuarios} />
                 </Route>
-                <Route path="/usuarios/new">
-
+                <Route path="/usuarios/nuevo" >
+                    <UsuarioForm />
                 </Route>
-                <Route path="/usuarios/detalle"></Route>
+                <Route path="/usuarios/detalle">
+                    <UsuarioDetalle />
+                </Route>
             </Switch>
-        </Container>
+        </>
     );
 };
 

@@ -1,51 +1,61 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faAdjust } from "@fortawesome/free-solid-svg-icons";
-import { Button, Table, Spinner, Modal } from "react-bootstrap";
+import React from 'react';
+import Link from '@material-ui/core/Link';
+import { makeStyles } from '@material-ui/core/styles';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Title from '../common/Title';
+
+const useStyles = makeStyles((theme) => ({
+    seeMore: {
+        marginTop: theme.spacing(3),
+    },
+}));
 
 const UsuarioList = ({ usuarios }) => {
-
+    const classes = useStyles();
     return (
-        <div>
-            <Table striped bordered hover>
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Nombre</th>
-                        <th>Apellido</th>
-                        <th>Correo</th>
-                        <th>Activo</th>
-                        <th colSpan="2">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {usuarios.length > 0 ? (
-                        usuarios.map((usuario, index) => (
-                            <tr key={usuario.id}>
-                                <td>{index + 1}</td>
-                                <td>{usuario.firstname}</td>
-                                <td>{usuario.lastname}</td>
-                                <td>{usuario.email}</td>
-                                <td>{usuario.enable ? "Sí" : "No"}</td>
-                                <td>
-                                    <Button>
-                                        <FontAwesomeIcon icon={faEye} />
-                                    </Button>
-                                </td>
-                                <td>
-                                    <Button>
-                                        <FontAwesomeIcon icon={faAdjust} />
-                                    </Button>
-                                </td>
-                            </tr>
-                        ))
-                    ) : (
-                        <tr>
-                            <td colSpan="7">No data</td>
-                        </tr>
-                    )}
-                </tbody>
+
+        <>
+            <Table size="small">
+                <TableHead>
+                    <TableRow>
+                        <TableCell>#</TableCell>
+                        <TableCell>Nombre</TableCell>
+                        <TableCell>Apellido</TableCell>
+                        <TableCell>Correo</TableCell>
+                        <TableCell>Activo</TableCell>
+                        <TableCell colSpan="2">Acciones</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {
+                        usuarios.map((usuario, index) =>
+                            <TableRow key={index}>
+                                <TableCell>{index + 1}</TableCell>
+                                <TableCell>{usuario.firstname}</TableCell>
+                                <TableCell>{usuario.lastname}</TableCell>
+                                <TableCell>{usuario.email}</TableCell>
+                                <TableCell>{usuario.enable ? "Sí" : "No"}</TableCell>
+                                <TableCell>
+                                    <Link color="primary" href="#" >
+                                        See more orders
+                                    </Link>
+                                </TableCell>
+                                <TableCell>
+                                    <Link color="primary" href="#" >
+                                        See more orders
+                                    </Link>
+                                </TableCell>
+                            </TableRow>
+                        )
+                    }
+                </TableBody>
             </Table>
-        </div>
+        </>
+
     );
 
 }
