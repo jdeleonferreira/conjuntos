@@ -18,9 +18,8 @@ const AuthProvider = ({ children }) => {
     const contextValue = {
         user,
         login(user) {
-            setUser({ id: '1', username: "fulano" });
-            //if (user)
-            //    setUser(user);
+            if (user)
+                setUser(user);
         },
         logout() {
             setUser(null);
@@ -28,6 +27,9 @@ const AuthProvider = ({ children }) => {
         },
         isLogged() {
             return !!user;
+        },
+        getUserFullname() {
+            return user.firstname + " " + user.lastname;
         }
     };
 

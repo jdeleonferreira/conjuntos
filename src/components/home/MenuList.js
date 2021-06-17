@@ -26,7 +26,7 @@ const MenuList = ({ props }) => {
 
             <ListItemLink icon={<HomeIcon />} primary="Apartamentos" exact to='/apartamentos' />
 
-            <ListItemLink icon={<PeopleIcon />} primary="Inquilinos" exact to='/apartamentos' />
+            <ListItemLink icon={<PeopleIcon />} primary="Inquilinos" exact to='/inquilinos' />
 
         </div>
     );

@@ -4,6 +4,7 @@ import { LinkContainer } from "react-router-bootstrap";
 import { useEffect, useState } from "react";
 import * as api from "../../services/api.service";
 import TorreList from "./TorreList";
+import TableList from "../common/TableList";
 
 const TorrePage = (props) => {
     const [torres, setTorres] = useState([]);
@@ -18,9 +19,9 @@ const TorrePage = (props) => {
     return (
         <Container>
             <Row>
-                <h1>Torres</h1>
+                <TableList titles={['Nombre Torre', 'No Pisos', 'Con Elevador?', 'Fecha Creación', 'Usuario']} rows={torres} cTitle="Torres" />
             </Row>
-            <Row>
+            {/* <Row>
                 <Nav>
                     <Nav.Item>
                         <LinkContainer to="/torres">
@@ -41,7 +42,7 @@ const TorrePage = (props) => {
                 </Route>
                 <Route path="/torres/new"></Route>
                 <Route path="/torres/detalle"></Route>
-            </Switch>
+            </Switch> */}
         </Container>
     );
 };

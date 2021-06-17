@@ -1,50 +1,55 @@
 import { BrowserRouter as Router, Switch, Route, Redirect, useRouteMatch } from "react-router-dom";
-import UsuarioList from "./UsuarioList";
+import UsuarioList from "../usuario/UsuarioList";
 import { Container, Row, Nav } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { useEffect, useState } from "react";
 import * as api from "../../services/api.service";
-import UsuarioForm from "./UsuarioForm";
-import UsuarioDetalle from "./UsuarioDetalle";
+import UsuarioForm from "../usuario/UsuarioForm";
+import UsuarioDetalle from "../usuario/UsuarioDetalle";
 
-const UsuarioPage = (props) => {
+const InquilinoPage = (props) => {
     const [usuarios, setUsuarios] = useState([]);
     const { url } = useRouteMatch();
 
+    const filterInquilinos = (obj) => {
+        return obj.role === 3;
+    }
+
     useEffect(async () => {
         await api.getUsers().then((res) => {
-            setUsuarios(res.data);
+            const data = res.data.filter(filterInquilinos);
+            setUsuarios(data);
         });
     }, []);
 
     return (
         <>
             <Row>
-                <h1>Usuarios</h1>
+                <h1>Inquilinos</h1>
             </Row>
             <Row>
                 <Nav>
                     <Nav.Item>
-                        <LinkContainer exact to='/usuarios'>
+                        <LinkContainer exact to='/inquilinos'>
                             <Nav.Link>Lista</Nav.Link>
                         </LinkContainer>
                     </Nav.Item>
                     <Nav.Item>
-                        <LinkContainer to="/usuarios/nuevo">
-                            <Nav.Link>Nuevo usuario</Nav.Link>
+                        <LinkContainer to="/inquilinos/nuevo">
+                            <Nav.Link>Nuevo inquilino</Nav.Link>
                         </LinkContainer>
                     </Nav.Item>
                 </Nav>
             </Row>
 
             <Switch>
-                <Route exact path="/usuarios" >
+                <Route exact path="/inquilinos" >
                     <UsuarioList usuarios={usuarios} />
                 </Route>
-                <Route path="/usuarios/nuevo" >
+                <Route path="/inquilinos/nuevo" >
                     <UsuarioForm />
                 </Route>
-                <Route path="/usuarios/detalle">
+                <Route path="/inquilinos/detalle">
                     <UsuarioDetalle />
                 </Route>
             </Switch>
@@ -53,4 +58,4 @@ const UsuarioPage = (props) => {
 };
 
 
-export default UsuarioPage;
+export default InquilinoPage;

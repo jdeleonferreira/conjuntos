@@ -1,17 +1,20 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form } from "react-bootstrap";
 import { Formik } from "formik";
 import * as yup from "yup";
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Switch from '@material-ui/core/Switch';
-
 import { makeStyles } from '@material-ui/core/styles';
 
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+
+import * as api from "../../services/api.service";
+import swal from 'sweetalert';
+import { Redirect, useHistory } from 'react-router';
 
 const schema = yup.object().shape({
     username: yup.string().required("El usuario es requerido!"),
@@ -25,18 +28,46 @@ const schema = yup.object().shape({
 
 
 const UsuarioForm = (props) => {
+    const [roles, setRoles] = useState([]);
+    const history = useHistory();
+
+    useEffect(
+        async () => {
+            await api.getRoles().then(
+                (res) => {
+                    setRoles(res.data);
+                }
+            )
+        }, []);
 
     const handleOnSubmit = (values) => {
 
-    }
+        api.postUser({
+            username: values.username,
+            firstname: values.firstname,
+            lastname: values.lastname,
+            email: values.email,
+            password: values.password,
+            enable: values.enable,
+            role: values.role
+        })
+            .then((res) => {
+                swal("Usuario creado", "El usuario ha sido creado exitosamente", "success")
+                    .then(() => {
+                        history.push("/usuarios")
+                    });
 
+            })
+            .catch((err) => {
+                swal("Error", "Hubo un error al crear el usuario", "error");
+            });
+    }
 
     const classes = useStyles();
 
 
     return (
         <>
-            <h2>Nuevo Usuario</h2>
             <Formik
                 validationSchema={schema}
                 onSubmit={handleOnSubmit}
@@ -61,7 +92,18 @@ const UsuarioForm = (props) => {
                 }) => (
                     <Form className={classes.form} noValidate onSubmit={handleSubmit}>
 
-                        role
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            name="role"
+                            value={values.role}
+                            onChange={handleChange}
+                            error={touched.role && Boolean(errors.role)} >
+                            <MenuItem value={0}>Seleccione una opción</MenuItem>
+                            {
+                                roles.map(rol => <MenuItem value={rol.id}>{rol.rolname}</MenuItem>)
+                            }
+                        </Select>
 
                         <TextField
                             variant="outlined"
@@ -83,14 +125,14 @@ const UsuarioForm = (props) => {
                             margin="normal"
                             required
                             fullWidth
-                            name="firstName"
+                            name="firstname"
                             label="Nombre"
                             type="text"
-                            id="firstName"
+                            id="firstname"
                             autoComplete="current-password"
-                            value={values.firstName}
+                            value={values.firstname}
                             onChange={handleChange}
-                            error={touched.firstName && Boolean(errors.firstName)}
+                            error={touched.firstname && Boolean(errors.firstname)}
                         />
 
                         <TextField
@@ -98,14 +140,14 @@ const UsuarioForm = (props) => {
                             margin="normal"
                             required
                             fullWidth
-                            name="lastName"
+                            name="lastname"
                             label="Apellido"
                             type="text"
-                            id="lastName"
+                            id="lastname"
                             autoComplete="current-password"
-                            value={values.lastName}
+                            value={values.lastname}
                             onChange={handleChange}
-                            error={touched.lastName && Boolean(errors.lastName)}
+                            error={touched.lastname && Boolean(errors.lastname)}
                         />
 
                         <TextField
@@ -150,8 +192,6 @@ const UsuarioForm = (props) => {
                             label="Activo?"
                         />
 
-
-
                         <Grid container>
                             <Grid item xs>
                                 <Button
@@ -167,6 +207,7 @@ const UsuarioForm = (props) => {
                                     type="button"
                                     variant="contained"
                                     color="primary"
+                                    onClick={() => { }}
                                     className={classes.submit} >
                                     Cancelar
                                 </Button>

@@ -19,6 +19,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import swal from "sweetalert";
 
 const schema = yup.object().shape({
     username: yup.string().required("El usuario es requerido!"),
@@ -35,21 +36,28 @@ const Login = () => {
     const location = useLocation();
     const previusObjectURL = location.state?.from;
 
-    const handleOnSubmit = (values) => {
+    const handleOnSubmit = async (values) => {
 
-        auth.login({});
-        console.log(auth.isLogged());
-        history.push(previusObjectURL || '/');
-        // apiService.getLogin(values.username, values.password)
-        //     .then((res) => {
-        //         console.log(res);
-        //         if (res) {
-        //             auth.Login(res)
-        //         }
-        //     })
-        //     .catch();
+        await apiService.getLogin(values.username, values.password)
+            .then((res) => {
 
-    }
+                if (res.data.status) {
+                    console.log("error");
+                    swal({
+                        title: "Login error!",
+                        text: "Usuario o contraseña incorrectos",
+                        icon: "error",
+                    });
+
+                } else if (res) {
+                    auth.login(res.data);
+                    history.push(previusObjectURL || '/');
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
 
 
     return (

@@ -6,6 +6,8 @@ import * as api from "../../services/api.service";
 import ApartamentoList from "./ApartamentoList";
 import ApartamentoForm from "./ApartamentoForm";
 
+import TableList from "../common/TableList";
+
 const ApartamentoPage = (props) => {
     const [apartamentos, setApartamentos] = useState([]);
     const { path, url } = useRouteMatch();
@@ -19,30 +21,8 @@ const ApartamentoPage = (props) => {
     return (
         <Container>
             <Row>
-                <h1>Apartamentos</h1>
+                <TableList titles={['Torre', 'Piso', 'Área', 'En arriendo', 'Fecha Creación', 'Usuario Creación']} rows={apartamentos} cTitle={'Apartamentos'} />
             </Row>
-            <Row>
-                <Nav>
-                    <Nav.Item>
-                        <LinkContainer to={`${url}/`}>  {/* apartamentos*/}
-                            <Nav.Link>Lista</Nav.Link>
-                        </LinkContainer>
-                    </Nav.Item>
-                    <Nav.Item>
-                        <LinkContainer to="/apartamentos/nuevo">
-                            <Nav.Link>Nueva Apartamento</Nav.Link>
-                        </LinkContainer>
-                    </Nav.Item>
-                </Nav>
-            </Row>
-
-            <Switch>
-                <Route exact path={`${url}`}>
-                    <ApartamentoList apartamentos={apartamentos} />
-                </Route>
-                <Route path={`${url}/nuevo`}><ApartamentoForm /> </Route>
-                <Route path={`${url}/detalle`}></Route>
-            </Switch>
         </Container>
     );
 };

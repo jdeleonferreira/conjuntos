@@ -29,13 +29,7 @@ const deleteRol = (roleId) => {
 
 //User CRUD
 const postUser = (user) => {
-    return api.post('users', user)
-        .then(function (response) {
-            console.log(response);
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
+    return api.post('users/', user);
 }
 
 const getUsers = () => {
@@ -47,7 +41,7 @@ const getUser = (userId) => {
 }
 
 const getLogin = (username, password) => {
-    return api.get('users/login',);
+    return api.post('login/', { username, password });
 }
 
 const putUser = (userId, user) => {
